@@ -1,7 +1,6 @@
 package xuhyang.learning.dataAccessLayer.entities;
 
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 /**
  * CountryCode char(3) PK
@@ -10,15 +9,23 @@ import javax.persistence.Table;
  */
 
 @Entity @Table(name="countryLanguage")
+@IdClass(CountryLanguagePK.class)
 public class CountryLanguage {
 
+    @Id
+    @Column(name = "CountryCode", insertable=false, updatable=false)
     private String countryCode;
-
+    @Id
+    @Column(name = "Language")
     private String language;
-
+    @Column(name = "IsOfficial")
     private Boolean isOfficial;
-
+    @Column(name = "percentage")
     private Float percentage;
+
+    @JoinColumn(name = "CountryCode", referencedColumnName = "Code")
+    @ManyToOne
+    private Country country;
 
 
     public String getCountryCode() {

@@ -1,8 +1,13 @@
 package xuhyang.learning.dataAccessLayer.entities;
 
 
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.sun.corba.se.spi.activation.ServerOperations;
+
+import javax.persistence.*;
+import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * Code char(3) PK
@@ -23,35 +28,58 @@ import javax.persistence.Table;
  */
 
 @Entity @Table(name="country")
-public class Country {
+public class Country implements Serializable {
 
+    @Id
+    @Column(name="Code")
     private String code;
 
+    @Column(name="Name")
     private String name;
 
+    @Column(name="Region")
     private String region;
 
+    @Column(name="surface_area")
     private Float surfaceArea;
 
+    @Column(name="indep_year")
     private Integer indepYear;
 
+    @Column(name="Population")
     private Integer population;
 
+    @Column(name="life_expectancy")
     private Float lifeExpectancy;
 
+    @Column(name="GNP")
     private Float GNP;
 
+    @Column(name="GNPOld")
     private Float GNPOld;
 
+    @Column(name="local_name")
     private String localName;
 
+    @Column(name="government_form")
     private String governmentForm;
 
+    @Column(name="head_of_state")
     private String headOfState;
 
+    @Column(name="Capital")
     private Integer capital;
 
+    @Column(name="Code2")
     private String code2;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "country", cascade = {CascadeType.MERGE, CascadeType.PERSIST})
+    private Set<City> cities = new HashSet<>();
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "country", cascade = {CascadeType.MERGE, CascadeType.PERSIST})
+    private Set<CountryLanguage> languages = new HashSet<>();
 
 
     public String getCode() {
@@ -164,5 +192,54 @@ public class Country {
 
     public void setCode2(String code2) {
         this.code2 = code2;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Country country = (Country) o;
+
+        if (code != null ? !code.equals(country.code) : country.code != null) return false;
+        if (name != null ? !name.equals(country.name) : country.name != null) return false;
+        if (region != null ? !region.equals(country.region) : country.region != null) return false;
+        if (surfaceArea != null ? !surfaceArea.equals(country.surfaceArea) : country.surfaceArea != null) return false;
+        if (indepYear != null ? !indepYear.equals(country.indepYear) : country.indepYear != null) return false;
+        if (population != null ? !population.equals(country.population) : country.population != null) return false;
+        if (lifeExpectancy != null ? !lifeExpectancy.equals(country.lifeExpectancy) : country.lifeExpectancy != null)
+            return false;
+        if (GNP != null ? !GNP.equals(country.GNP) : country.GNP != null) return false;
+        if (GNPOld != null ? !GNPOld.equals(country.GNPOld) : country.GNPOld != null) return false;
+        if (localName != null ? !localName.equals(country.localName) : country.localName != null) return false;
+        if (governmentForm != null ? !governmentForm.equals(country.governmentForm) : country.governmentForm != null)
+            return false;
+        if (headOfState != null ? !headOfState.equals(country.headOfState) : country.headOfState != null) return false;
+        if (capital != null ? !capital.equals(country.capital) : country.capital != null) return false;
+        if (code2 != null ? !code2.equals(country.code2) : country.code2 != null) return false;
+        if (cities != null ? !cities.equals(country.cities) : country.cities != null) return false;
+        return languages != null ? languages.equals(country.languages) : country.languages == null;
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result = code != null ? code.hashCode() : 0;
+        result = 31 * result + (name != null ? name.hashCode() : 0);
+        result = 31 * result + (region != null ? region.hashCode() : 0);
+        result = 31 * result + (surfaceArea != null ? surfaceArea.hashCode() : 0);
+        result = 31 * result + (indepYear != null ? indepYear.hashCode() : 0);
+        result = 31 * result + (population != null ? population.hashCode() : 0);
+        result = 31 * result + (lifeExpectancy != null ? lifeExpectancy.hashCode() : 0);
+        result = 31 * result + (GNP != null ? GNP.hashCode() : 0);
+        result = 31 * result + (GNPOld != null ? GNPOld.hashCode() : 0);
+        result = 31 * result + (localName != null ? localName.hashCode() : 0);
+        result = 31 * result + (governmentForm != null ? governmentForm.hashCode() : 0);
+        result = 31 * result + (headOfState != null ? headOfState.hashCode() : 0);
+        result = 31 * result + (capital != null ? capital.hashCode() : 0);
+        result = 31 * result + (code2 != null ? code2.hashCode() : 0);
+        result = 31 * result + (cities != null ? cities.hashCode() : 0);
+        result = 31 * result + (languages != null ? languages.hashCode() : 0);
+        return result;
     }
 }
